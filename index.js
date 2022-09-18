@@ -22,4 +22,10 @@ app.use('/api',routes)
 //starting the server at the port of your choice 
 app.listen(process.env.PORT || port, () => {
     console.log("app is listening at port", port)
-})
+    var url = "mongodb+srv://blllrpy: sendhelp09 @projects.6btckj8.mongodb.net/?retryWrites=true&w=majority";
+
+    MongoClient.connect(url, function(err, db) {
+      if (err) throw err;
+      console.log("Database created!");
+      db.close();
+    });
