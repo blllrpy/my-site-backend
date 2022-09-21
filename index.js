@@ -1,34 +1,33 @@
-var express = require("express");
-var path = require("path");
-var bodyParser = require("body-parser");
-var app = express();
-var mongoose = require("mongoose");
-mongoose.connect(
-  "mongodb+srv://blllrpy:sendhelp09@projects.6btckj8.mongodb.net/?retryWrites=true&w=majority"
-);
-var publicfolder = path.join(__dirname, "public");
+const express = require("express");
+const mangoose = require("mongoose");
+const routes = require("./routes/score");
+const cors = require("cors");
 
-app.use(express.static(publicfolder));
-app.use(bodyParser.urlencoded({ extended: true }));
+const app = express();
+//use cors
+app.use(cors());
+const port = 4000;
+const dbURL =
+  "mongodb+srv://blllrpy:sendhelp09@projects.6btckj8.mongodb.net/?retryWrites=true&w=majority";
 
-var User = mongoose.model("User", { name: String, age: Number });
+//connecting to the mongo cloud db through the mongoose package
+mangoose
+  .connect(dbURL)
+  .then(() => {
+    console.log("connected to the cloud");
+  })
+  .catch((error) => {
+    console.log(error);
+  });
 
-app.get("", (req, res) => {
-  res.render(publicfolder + "/form.ejs");
-});
+//in order to let express parse JSON
+app.use(express.json());
+//routes
+app.use("/api", routes);
 
-app.post("/user", (req, res) => {
-  var user = new User({ name: req.body.username, age: req.body.age });
-
-  user
-    .save()
-    .then((newUser) => {
-      res.send("created new user");
-    })
-    .catch((err) => {
-      res.send("something went wrong");
-    });
-});
-app.listen(3000, () => {
-  console.log("good good");
+//starting the server at the port of your choice
+app.listen(process.env.PORT || port, () => {
+  console.log("app is listening at port", port);
+  var url =
+    "mongodb+srv://blllrpy: sendhelp09 @projects.6btckj8.mongodb.net/?retryWrites=true&w=majority";
 });
