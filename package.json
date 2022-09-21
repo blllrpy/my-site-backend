@@ -6,3 +6,6 @@
     "node": "18.x"
   }
 }
+"scripts": {
+  "start": "app.js"
+}
